@@ -40,7 +40,7 @@ func TestServiceCreateUser(t *testing.T) {
 		Name:    "Teste",
 		Email:   "teste@teste.com",
 		Address: "Teste",
-		Age:     "10",
+		Age:     10,
 	}
 
 	user, err := s.CreateUser(&mockUser)
@@ -57,7 +57,7 @@ func TestServiceCreateUserAlreadyExists(t *testing.T) {
 		Name:    "John Snow",
 		Email:   "john.snow@winterfell.com",
 		Address: "Teste",
-		Age:     "10",
+		Age:     10,
 	}
 
 	user, err := s.CreateUser(&mockUser)
