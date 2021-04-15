@@ -31,12 +31,12 @@ func (repository *UserRepository) GetUsers() (*[]models.User, error) {
 
 func (repository *UserRepository) CreateUser(createUser *models.User) (*models.User, error) {
 	user := models.User{
-		Name:    createUser.Name,
-		Age:     createUser.Age,
-		Email:   createUser.Email,
-		Address: createUser.Address,
+		Name:     createUser.Name,
+		Age:      createUser.Age,
+		Email:    createUser.Email,
+		Address:  createUser.Address,
+		Password: createUser.Password,
 	}
-	user.SetPassword("12345")
 
 	err := database.DB.Create(&user).Error
 

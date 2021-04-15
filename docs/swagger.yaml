@@ -1,0 +1,128 @@
+basePath: /api/public
+definitions:
+  models.User:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.UserRegister:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      confirm_password:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Swagger API for Golang Test.
+  termsOfService: http://swagger.io/terms/
+  title: Go test Swagger API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      description: Get all exists users.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: get all exists uses
+      tags:
+      - Users
+    post:
+      description: Create user.
+      parameters:
+      - description: User Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Create user
+      tags:
+      - Users
+    put:
+      description: Update user.
+      parameters:
+      - description: User Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Update user
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      description: Delete user by Id.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Delete user based on given ID
+      tags:
+      - Users
+    get:
+      description: Get user by Id.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Retrieves user based on given ID
+      tags:
+      - Users
+swagger: "2.0"

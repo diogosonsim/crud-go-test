@@ -19,6 +19,13 @@ func NewUserController(service *services.UserService) *UserController {
 	}
 }
 
+// GetUsers func gets all exists users.
+// @Description Get all exists users.
+// @Summary get all exists uses
+// @Tags Users
+// @Produce json
+// @Success 200 {array} models.User
+// @Router /users [get]
 func (ctrl *UserController) GetUsers(c *fiber.Ctx) error {
 	if users, err := ctrl.service.GetUsers(); err != nil {
 		c.Status(http.StatusConflict)
@@ -30,49 +37,80 @@ func (ctrl *UserController) GetUsers(c *fiber.Ctx) error {
 	}
 }
 
+// GetUser func return user by Id.
+// @Description Get user by Id.
+// @Summary Retrieves user based on given ID
+// @Tags Users
+// @Produce json
+// @Param id path integer true "User ID"
+// @Success 200 {object} models.User
+// @Router /users/{id} [get]
+func (ctrl *UserController) GetUser(c *fiber.Ctx) error {
+	id, _ := strconv.Atoi(c.Params("id"))
+
+	if user, err := ctrl.service.GetUser(uint(id)); err != nil {
+		c.Status(http.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "User not found",
+		})
+	} else {
+		return c.JSON(user)
+	}
+}
+
+// CreateUser create user.
+// @Description Create user.
+// @Summary Create user
+// @Tags Users
+// @Produce json
+// @Param data body models.UserRegister true "User Data"
+// @Success 200 {object} models.User
+// @Router /users [post]
 func (ctrl *UserController) CreateUser(c *fiber.Ctx) error {
-	var user *models.User
-	var data map[string]string
+	var userRegister *models.UserRegister
 
-	if err := c.BodyParser(&data); err != nil {
+	if err := c.BodyParser(&userRegister); err != nil {
 		return err
 	}
 
-	if err := c.BodyParser(&user); err != nil {
-		return err
-	}
-
-	if data["password"] == "" {
+	if userRegister.Password == "" {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "password required",
 		})
 	}
 
-	if data["confirm_password"] == "" {
+	if userRegister.ConfirmPassword == "" {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "confirm_password required",
 		})
 	}
 
-	if user.Email == "" {
+	if userRegister.Email == "" {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "email required",
 		})
 	}
 
-	if data["password"] != data["confirm_password"] {
+	if userRegister.Password != userRegister.ConfirmPassword {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "Passwords do not match",
 		})
 	}
 
-	user.SetPassword(data["password"])
+	user := models.User{
+		Name:    userRegister.Name,
+		Age:     userRegister.Age,
+		Address: userRegister.Address,
+		Email:   userRegister.Email,
+	}
 
-	if value, err := ctrl.service.CreateUser(user); err != nil {
+	user.SetPassword(userRegister.Password)
+
+	if value, err := ctrl.service.CreateUser(&user); err != nil {
 		c.Status(http.StatusConflict)
 		return c.JSON(fiber.Map{
 			"message": "Email already exist!",
@@ -87,6 +125,14 @@ func (ctrl *UserController) CreateUser(c *fiber.Ctx) error {
 
 }
 
+// UpdateUser update user.
+// @Description Update user.
+// @Summary Update user
+// @Tags Users
+// @Produce json
+// @Param data body models.User true "User Data"
+// @Success 200 {object} models.User
+// @Router /users [put]
 func (ctrl *UserController) UpdateUser(c *fiber.Ctx) error {
 	var user *models.User
 
@@ -112,19 +158,14 @@ func (ctrl *UserController) UpdateUser(c *fiber.Ctx) error {
 
 }
 
-func (ctrl *UserController) GetUser(c *fiber.Ctx) error {
-	id, _ := strconv.Atoi(c.Params("id"))
-
-	if user, err := ctrl.service.GetUser(uint(id)); err != nil {
-		c.Status(http.StatusNotFound)
-		return c.JSON(fiber.Map{
-			"message": "User not found",
-		})
-	} else {
-		return c.JSON(user)
-	}
-}
-
+// DeleteUser func delete the user id.
+// @Description Delete user by Id.
+// @Summary Delete user based on given ID
+// @Tags Users
+// @Produce json
+// @Param id path integer true "User ID"
+// @Success 200 {object} models.User
+// @Router /users/{id} [delete]
 func (ctrl *UserController) DeleteUser(c *fiber.Ctx) error {
 	id, _ := strconv.Atoi(c.Params("id"))
 

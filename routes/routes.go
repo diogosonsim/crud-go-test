@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// PublicRoutes func for describe public routes.
 func Routes(app *fiber.App) {
 	userController := controllers.NewUserController(
 		services.NewUserService(
@@ -14,13 +15,13 @@ func Routes(app *fiber.App) {
 		),
 	)
 
-	app.Get("/api/users", userController.GetUsers)
+	app.Get("/api/public/users", userController.GetUsers)
 
-	app.Get("/api/users/:id", userController.GetUser)
+	app.Get("/api/public/users/:id", userController.GetUser)
 
-	app.Post("/api/users", userController.CreateUser)
+	app.Post("/api/public/users", userController.CreateUser)
 
-	app.Put("/api/users", userController.UpdateUser)
+	app.Put("/api/public/users", userController.UpdateUser)
 
-	app.Delete("/api/users/:id", userController.DeleteUser)
+	app.Delete("/api/public/users/:id", userController.DeleteUser)
 }
