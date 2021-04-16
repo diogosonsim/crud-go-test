@@ -19,32 +19,32 @@ func NewUserController(service *services.UserService) *UserController {
 	}
 }
 
-// GetUsers func gets all exists users.
-// @Description Get all exists users.
-// @Summary get all exists uses
-// @Tags Users
+// Retrieves all users.
+// @Description Retrieves all users.
+// @Summary Retrieves all users.
+// @Tags Private Routes
 // @Produce json
 // @Success 200 {array} models.User
-// @Router /users [get]
+// @Router /private/users [get]
 func (ctrl *UserController) GetUsers(c *fiber.Ctx) error {
 	if users, err := ctrl.service.GetUsers(); err != nil {
-		c.Status(http.StatusConflict)
+		c.Status(http.StatusNotFound)
 		return c.JSON(fiber.Map{
-			"message": "Email already exist!",
+			"message": "Invalid request",
 		})
 	} else {
 		return c.JSON(users)
 	}
 }
 
-// GetUser func return user by Id.
-// @Description Get user by Id.
+// Retrieves user based on given ID
+// @Description Retrieves user based on given ID
 // @Summary Retrieves user based on given ID
-// @Tags Users
+// @Tags Private Routes
 // @Produce json
 // @Param id path integer true "User ID"
 // @Success 200 {object} models.User
-// @Router /users/{id} [get]
+// @Router /private/users/{id} [get]
 func (ctrl *UserController) GetUser(c *fiber.Ctx) error {
 	id, _ := strconv.Atoi(c.Params("id"))
 
@@ -58,14 +58,14 @@ func (ctrl *UserController) GetUser(c *fiber.Ctx) error {
 	}
 }
 
-// CreateUser create user.
-// @Description Create user.
-// @Summary Create user
-// @Tags Users
+// Create a new user.
+// @Description Create a new user.
+// @Summary Create a new user.
+// @Tags Private Routes
 // @Produce json
 // @Param data body models.UserRegister true "User Data"
 // @Success 200 {object} models.User
-// @Router /users [post]
+// @Router /private/users [post]
 func (ctrl *UserController) CreateUser(c *fiber.Ctx) error {
 	var userRegister *models.UserRegister
 
@@ -125,14 +125,14 @@ func (ctrl *UserController) CreateUser(c *fiber.Ctx) error {
 
 }
 
-// UpdateUser update user.
-// @Description Update user.
-// @Summary Update user
-// @Tags Users
+// Update selected user
+// @Description Update selected user
+// @Summary Update selected user
+// @Tags Private Routes
 // @Produce json
 // @Param data body models.User true "User Data"
 // @Success 200 {object} models.User
-// @Router /users [put]
+// @Router /private/users [put]
 func (ctrl *UserController) UpdateUser(c *fiber.Ctx) error {
 	var user *models.User
 
@@ -158,14 +158,14 @@ func (ctrl *UserController) UpdateUser(c *fiber.Ctx) error {
 
 }
 
-// DeleteUser func delete the user id.
-// @Description Delete user by Id.
+// Delete user based on given ID
+// @Description Delete user based on given ID
 // @Summary Delete user based on given ID
-// @Tags Users
+// @Tags Private Routes
 // @Produce json
 // @Param id path integer true "User ID"
 // @Success 200 {object} models.User
-// @Router /users/{id} [delete]
+// @Router /private/users/{id} [delete]
 func (ctrl *UserController) DeleteUser(c *fiber.Ctx) error {
 	id, _ := strconv.Atoi(c.Params("id"))
 

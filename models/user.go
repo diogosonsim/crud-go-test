@@ -20,11 +20,18 @@ type UserRegister struct {
 	Address         string `json:"address"`
 }
 
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// Function to generate hashed password
 func (user *User) SetPassword(value string) {
 	password, _ := bcrypt.GenerateFromPassword([]byte(value), 14)
 	user.Password = password
 }
 
+// Function to compare user password
 func (user *User) ComparePassword(value string) error {
 	return bcrypt.CompareHashAndPassword(user.Password, []byte(value))
 }

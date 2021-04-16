@@ -5,12 +5,14 @@ import (
 	"github.com/diogosonsim/crud-go-test/models"
 )
 
+// User Repository struct
 type UserRepository struct{}
 
 func NewUserRepository() *UserRepository {
 	return &UserRepository{}
 }
 
+// Function to get user by id
 func (repository *UserRepository) GetUser(id uint) (*models.User, error) {
 	var user models.User
 
@@ -21,6 +23,18 @@ func (repository *UserRepository) GetUser(id uint) (*models.User, error) {
 	return &user, err
 }
 
+// Function to get user by email
+func (repository *UserRepository) GetUserByEmail(email string) (*models.User, error) {
+	var user models.User
+
+	err := database.DB.Where("email = ?", email).
+		First(&user).
+		Error
+
+	return &user, err
+}
+
+// Function to get all users
 func (repository *UserRepository) GetUsers() (*[]models.User, error) {
 	var users []models.User
 
@@ -29,6 +43,7 @@ func (repository *UserRepository) GetUsers() (*[]models.User, error) {
 	return &users, err
 }
 
+// Function to create a new user
 func (repository *UserRepository) CreateUser(createUser *models.User) (*models.User, error) {
 	user := models.User{
 		Name:     createUser.Name,
@@ -43,6 +58,7 @@ func (repository *UserRepository) CreateUser(createUser *models.User) (*models.U
 	return &user, err
 }
 
+// Function to update user values
 func (repository *UserRepository) UpdateUser(updateUser *models.User) (*models.User, error) {
 	user := models.User{}
 
@@ -55,6 +71,7 @@ func (repository *UserRepository) UpdateUser(updateUser *models.User) (*models.U
 	return updateUser, err
 }
 
+// Function to delete user by id
 func (repository *UserRepository) DeleteUser(id uint) (string, error) {
 	user := models.User{
 		Id: uint(id),

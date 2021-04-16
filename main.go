@@ -11,7 +11,7 @@ import (
 // @version 1.0
 // @description Swagger API for Golang Test.
 // @termsOfService http://swagger.io/terms/
-// @BasePath /api/public
+// @BasePath /api
 func main() {
 	database.Connect()
 
@@ -24,8 +24,8 @@ func main() {
 	}))
 
 	// Routes.
-	routes.Routes(app)
 	routes.SwaggerRoute(app)
+	routes.Routes(app)
 
 	app.Listen(":3000")
 }

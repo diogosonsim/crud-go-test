@@ -1,5 +1,12 @@
-basePath: /api/public
+basePath: /api
 definitions:
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   models.User:
     properties:
       address:
@@ -35,9 +42,35 @@ info:
   title: Go test Swagger API
   version: "1.0"
 paths:
-  /users:
+  /private/logged:
     get:
-      description: Get all exists users.
+      description: Retrieves user based on access token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Retrieves user based on access token
+      tags:
+      - Private Routes
+  /private/logout:
+    post:
+      description: Remove access token from cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Remove access token from cookie
+      tags:
+      - Private Routes
+  /private/users:
+    get:
+      description: Retrieves all users.
       produces:
       - application/json
       responses:
@@ -47,11 +80,11 @@ paths:
             items:
               $ref: '#/definitions/models.User'
             type: array
-      summary: get all exists uses
+      summary: Retrieves all users.
       tags:
-      - Users
+      - Private Routes
     post:
-      description: Create user.
+      description: Create a new user.
       parameters:
       - description: User Data
         in: body
@@ -66,11 +99,11 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Create user
+      summary: Create a new user.
       tags:
-      - Users
+      - Private Routes
     put:
-      description: Update user.
+      description: Update selected user
       parameters:
       - description: User Data
         in: body
@@ -85,12 +118,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Update user
+      summary: Update selected user
       tags:
-      - Users
-  /users/{id}:
+      - Private Routes
+  /private/users/{id}:
     delete:
-      description: Delete user by Id.
+      description: Delete user based on given ID
       parameters:
       - description: User ID
         in: path
@@ -106,9 +139,9 @@ paths:
             $ref: '#/definitions/models.User'
       summary: Delete user based on given ID
       tags:
-      - Users
+      - Private Routes
     get:
-      description: Get user by Id.
+      description: Retrieves user based on given ID
       parameters:
       - description: User ID
         in: path
@@ -124,5 +157,45 @@ paths:
             $ref: '#/definitions/models.User'
       summary: Retrieves user based on given ID
       tags:
-      - Users
+      - Private Routes
+  /public/login:
+    post:
+      description: Public route to authenticate a user.
+      parameters:
+      - description: User Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Public route to authenticate a user
+      tags:
+      - Public Routes
+  /public/register:
+    post:
+      description: Public route to create a new user.
+      parameters:
+      - description: User Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Public route to create a new user
+      tags:
+      - Public Routes
 swagger: "2.0"

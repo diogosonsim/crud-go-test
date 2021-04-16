@@ -10,6 +10,7 @@ import (
 
 var DB *gorm.DB
 
+// Create database access and migrate the tables
 func Connect() {
 	database, err := gorm.Open(mysql.Open("root:password@/go-test"), &gorm.Config{})
 

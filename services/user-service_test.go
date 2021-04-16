@@ -25,6 +25,23 @@ func TestServiceGetUserByIdNotFound(t *testing.T) {
 	}
 }
 
+func TestServiceGetUserByEmail(t *testing.T) {
+	s := NewUserService(newMockUserDAO())
+	user, err := s.GetUserByEmail("john.snow@winterfell.com")
+	if assert.Nil(t, err) && assert.NotNil(t, user) {
+		assert.Equal(t, "John Snow", user.Name)
+		assert.Equal(t, "john.snow@winterfell.com", user.Email)
+	}
+}
+
+func TestServiceGetUserByEmailNotFound(t *testing.T) {
+	s := NewUserService(newMockUserDAO())
+	user, err := s.GetUserByEmail("john.snow3@winterfell.com")
+	if assert.NotNil(t, err) && assert.Nil(t, user) {
+		assert.Equal(t, "not found", err.Error())
+	}
+}
+
 func TestServiceGetUsers(t *testing.T) {
 	s := NewUserService(newMockUserDAO())
 	users, err := s.GetUsers()
@@ -116,6 +133,15 @@ func TestServiceDeleteUserNotFound(t *testing.T) {
 func (m *mockUserDAO) GetUser(id uint) (*models.User, error) {
 	for _, record := range m.records {
 		if record.Id == id {
+			return &record, nil
+		}
+	}
+	return nil, errors.New("not found")
+}
+
+func (m *mockUserDAO) GetUserByEmail(email string) (*models.User, error) {
+	for _, record := range m.records {
+		if record.Email == email {
 			return &record, nil
 		}
 	}

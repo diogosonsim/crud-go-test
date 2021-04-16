@@ -25,16 +25,56 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users": {
+        "/private/logged": {
             "get": {
-                "description": "Get all exists users.",
+                "description": "Retrieves user based on access token",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Private Routes"
                 ],
-                "summary": "get all exists uses",
+                "summary": "Retrieves user based on access token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/logout": {
+            "post": {
+                "description": "Remove access token from cookie",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Private Routes"
+                ],
+                "summary": "Remove access token from cookie",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/private/users": {
+            "get": {
+                "description": "Retrieves all users.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Private Routes"
+                ],
+                "summary": "Retrieves all users.",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -48,14 +88,14 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "Update user.",
+                "description": "Update selected user",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Private Routes"
                 ],
-                "summary": "Update user",
+                "summary": "Update selected user",
                 "parameters": [
                     {
                         "description": "User Data",
@@ -77,14 +117,14 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create user.",
+                "description": "Create a new user.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Private Routes"
                 ],
-                "summary": "Create user",
+                "summary": "Create a new user.",
                 "parameters": [
                     {
                         "description": "User Data",
@@ -106,14 +146,14 @@ var doc = `{
                 }
             }
         },
-        "/users/{id}": {
+        "/private/users/{id}": {
             "get": {
-                "description": "Get user by Id.",
+                "description": "Retrieves user based on given ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Private Routes"
                 ],
                 "summary": "Retrieves user based on given ID",
                 "parameters": [
@@ -135,12 +175,12 @@ var doc = `{
                 }
             },
             "delete": {
-                "description": "Delete user by Id.",
+                "description": "Delete user based on given ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Private Routes"
                 ],
                 "summary": "Delete user based on given ID",
                 "parameters": [
@@ -161,9 +201,82 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/public/login": {
+            "post": {
+                "description": "Public route to authenticate a user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public Routes"
+                ],
+                "summary": "Public route to authenticate a user",
+                "parameters": [
+                    {
+                        "description": "User Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/register": {
+            "post": {
+                "description": "Public route to create a new user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public Routes"
+                ],
+                "summary": "Public route to create a new user",
+                "parameters": [
+                    {
+                        "description": "User Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserRegister"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "models.LoginRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {
@@ -223,7 +336,7 @@ type swaggerInfo struct {
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
 	Host:        "",
-	BasePath:    "/api/public",
+	BasePath:    "/api",
 	Schemes:     []string{},
 	Title:       "Go test Swagger API",
 	Description: "Swagger API for Golang Test.",
