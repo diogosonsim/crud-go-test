@@ -73,31 +73,10 @@ func (ctrl *UserController) CreateUser(c *fiber.Ctx) error {
 		return err
 	}
 
-	if userRegister.Password == "" {
-		c.Status(400)
+	if err := userRegister.IsValidRegister(); err != nil {
+		c.Status(http.StatusUnprocessableEntity)
 		return c.JSON(fiber.Map{
-			"message": "password required",
-		})
-	}
-
-	if userRegister.ConfirmPassword == "" {
-		c.Status(400)
-		return c.JSON(fiber.Map{
-			"message": "confirm_password required",
-		})
-	}
-
-	if userRegister.Email == "" {
-		c.Status(400)
-		return c.JSON(fiber.Map{
-			"message": "email required",
-		})
-	}
-
-	if userRegister.Password != userRegister.ConfirmPassword {
-		c.Status(400)
-		return c.JSON(fiber.Map{
-			"message": "Passwords do not match",
+			"error": err,
 		})
 	}
 
@@ -107,7 +86,6 @@ func (ctrl *UserController) CreateUser(c *fiber.Ctx) error {
 		Address: userRegister.Address,
 		Email:   userRegister.Email,
 	}
-
 	user.SetPassword(userRegister.Password)
 
 	if value, err := ctrl.service.CreateUser(&user); err != nil {
@@ -140,10 +118,10 @@ func (ctrl *UserController) UpdateUser(c *fiber.Ctx) error {
 		return err
 	}
 
-	if user.Email == "" {
-		c.Status(400)
+	if err := user.IsValid(); err != nil {
+		c.Status(http.StatusUnprocessableEntity)
 		return c.JSON(fiber.Map{
-			"message": "email required",
+			"error": err,
 		})
 	}
 
