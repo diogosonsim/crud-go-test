@@ -19,7 +19,6 @@
 ### API's
 
 ```
----
 
 POST {url}/api/public/register - Public route to create users
 {
@@ -30,32 +29,19 @@ POST {url}/api/public/register - Public route to create users
     "confirm_password": "confirm_password"
 }
 
----
-
 POST {url}/api/public/login - Public route to create your session.
 {
     "email": "email",
     "password": "password"
 }
 
---
-
 GET {url}/api/private/logged - Private route to retrieve logged data.
-
----
 
 POST {url}/api/private/logout - Private route to logout your session.
 
-
----
-
 GET {url}/api/private/users - Private route to retrieve all users.
 
----
-
 GET {url}/api/private/users/:id - Private route to retrieve selected user.
-
----
 
 POST {url}/api/private/users - Private route to create a new user.
 {
@@ -67,8 +53,6 @@ POST {url}/api/private/users - Private route to create a new user.
     "confirm_password": "confirm_password"
 }
 
----
-
 PUT {url}/api/private/users - Private route to update selected user.
 {
     "id": 0,
@@ -77,8 +61,6 @@ PUT {url}/api/private/users - Private route to update selected user.
     "email": "email",
     "address": "address"
 }
-
----
 
 DELETE {url}/api/private/users/:id - Private route to delete selected user.
 
