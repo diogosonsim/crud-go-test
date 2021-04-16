@@ -6,6 +6,8 @@
 
   - `docker-compose -f "docker-compose.yml" up -d --build`
 
+- Install dependencies with `go mod tidy`
+
 - You can build the project and run with `go build .` or `go run .`
 
 - You can test if the application is up at `localhost:3000/api/public/healthcheck`
