@@ -202,6 +202,26 @@ var doc = `{
                 }
             }
         },
+        "/public/healthCheck": {
+            "get": {
+                "description": "Healthcheck",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public Routes"
+                ],
+                "summary": "Healthcheck",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/public/login": {
             "post": {
                 "description": "Public route to authenticate a user.",

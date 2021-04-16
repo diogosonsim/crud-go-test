@@ -27,6 +27,7 @@ func Routes(app *fiber.App) {
 	//Public routes
 	app.Post("/api/public/register", authController.Register)
 	app.Post("/api/public/login", authController.Login)
+	app.Get("/api/public/healthcheck", controllers.HealthCheck)
 
 	//Private routes
 	app.Use(middlewares.IsAuthenticated)

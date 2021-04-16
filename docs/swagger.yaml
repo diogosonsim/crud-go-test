@@ -158,6 +158,19 @@ paths:
       summary: Retrieves user based on given ID
       tags:
       - Private Routes
+  /public/healthCheck:
+    get:
+      description: Healthcheck
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Healthcheck
+      tags:
+      - Public Routes
   /public/login:
     post:
       description: Public route to authenticate a user.

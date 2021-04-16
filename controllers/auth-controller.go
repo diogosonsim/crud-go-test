@@ -162,3 +162,16 @@ func Logout(c *fiber.Ctx) error {
 		"message": "success",
 	})
 }
+
+// Healthcheck.
+// @Description Healthcheck
+// @Summary Healthcheck
+// @Tags Public Routes
+// @Produce json
+// @Success 200 string message
+// @Router /public/healthCheck [get]
+func HealthCheck(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"message": "The application is running.",
+	})
+}
